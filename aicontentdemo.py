@@ -9,7 +9,7 @@ client = Groq(api_key=api_key)
 
 model_name = "llama-3.3-70b-versatile"
 
-st.title("AI CONTENT GENERATOR ")
+st.title("CONTENT GENERATOR ")
 st.caption(" by VARSHITHA")
 
 topic = st.text_input("give a topic")
