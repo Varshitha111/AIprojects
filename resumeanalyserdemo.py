@@ -7,9 +7,9 @@ load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 client = Groq(api_key=api_key)
 model_name = "llama-3.3-70b-versatile"
-st.title("AI Resume Analyzer")
-uploaded_file = st.file_uploader("Upload your Resume in pdf", type=["pdf"])
-job_description = st.text_area("Paste the Job Description", height=200)
+st.title("resume analyser by varshitha")
+uploaded_file = st.file_uploader("upload resume", type=["pdf"])
+job_description = st.text_area("write jd", height=200)
 resume_text = ""
 if uploaded_file:
     with pdfplumber.open(uploaded_file) as pdf:
@@ -36,7 +36,7 @@ if st.button("analyze resume"):
         - [bullet point 2]
         - [bullet point 3]
         """
-        user_prompt=f"Resume:\n{resume_text}\nJob Description:\n{job_description}"
+        user_prompt=f"resume:\n{resume_text}\nJob Description:\n{job_description}"
         try:
             response = client.chat.completions.create(
                 model=model_name,
