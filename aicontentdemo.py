@@ -15,7 +15,7 @@ st.caption(" by VARSHITHA")
 topic = st.text_input("give a topic")
 
 tone = st.sidebar.selectbox("select tone",["Professional","Casual","Humorous","Inspirational"])
-output_format = st.sidebar.selectbox("Output Format:",["Blog Post", "LinkedIn Post", "X post"])
+output_format = st.sidebar.selectbox("OUTPUT :",["Blog Post", "LinkedIn Post", "X post"])
 word_limit = st.sidebar.slider("Word Limit:", min_value=50, max_value=1000, value=300, step=50)
 if st.button("generate content"):
     if not topic.strip():
