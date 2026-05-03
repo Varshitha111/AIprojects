@@ -16,7 +16,7 @@ if uploaded_file:
         resume_text = "\n".join(page.extract_text() for page in pdf.pages if page.extract_text())
 if st.button("analyze resume"):
     if not resume_text.strip():
-        st.warning("Please upload a resume")
+        st.warning("upload resume")
     elif not job_description.strip():
         st.warning("Please enter a job description.")
     else:
@@ -48,7 +48,7 @@ if st.button("analyze resume"):
                 max_tokens=1024
             )
             result = response.choices[0].message.content
-            st.markdown("Analysis Result")
+            st.markdown("Analysis result")
             st.markdown(result)
         except Exception as e:
-            st.error(f"Something went wrong {e}")
+            st.error(f"got an error {e}")
