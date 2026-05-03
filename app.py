@@ -23,7 +23,7 @@ if st.sidebar.button("Refresh"):
     st.rerun()
 
 st.title("NEW AI")
-st.caption(f"Personality: {personality}")
+st.caption("by VARSHITHA")
 if "messages" not in st.session_state:
     st.session_state.messages = []
 for message in st.session_state.messages:
