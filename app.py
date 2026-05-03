@@ -1,62 +1,39 @@
 import streamlit as st
 from groq import Groq
+from dotenv import load_dotenv
+import os
+load_dotenv()
+api_key = os.getenv("GROQ_API_KEY")
+client = Groq(api_key=api_key)
 
-st.set_page_config(page_title="My AI Assistant", page_icon="🤖", layout="centered")
-
-# ===================== HARD CODED API KEY =====================
-# WARNING: This key is visible to anyone who sees your code
-GROQ_API_KEY = "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"
-
-client = Groq(api_key=GROQ_API_KEY)
-
-# ===================== CONFIG =====================
-MODELS = {
-    "Llama 3.3 70B (Recommended)": "llama-3.3-70b-versatile",
-    "Llama 3.1 8B": "llama-3.1-8b-instant",
-}
 
 PERSONALITIES = {
     "General Assistant": "You are a helpful and friendly AI assistant.",
     "Coding Tutor": "You are an expert programming tutor. Explain clearly with examples.",
-    "Friendly Friend": "You are a warm, fun and supportive friend.",
+    "Friend": "You are a warm, fun and supportive friend.",
     "Strict Teacher": "You are a strict but fair teacher.",
 }
-
-# ===================== SIDEBAR =====================
-st.sidebar.title("⚙️ Settings")
-
 personality = st.sidebar.selectbox("Choose Personality:", list(PERSONALITIES.keys()))
 system_prompt = PERSONALITIES[personality]
+model_name = "llama-3.3-70b-versatile"
 
-selected_model = st.sidebar.selectbox("Choose Model:", list(MODELS.keys()))
-model_name = MODELS[selected_model]
 
-if st.sidebar.button("🔄 New Chat"):
+if st.sidebar.button("Refresh"):
     st.session_state.messages = []
     st.rerun()
 
-# ===================== MAIN CHAT =====================
-st.title("🤖 My AI Assistant")
-st.caption(f"Personality: **{personality}** | Powered by Groq")
-
+st.title("NEW AI")
+st.caption(f"Personality: {personality}")
 if "messages" not in st.session_state:
     st.session_state.messages = []
-
-# Display chat history
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
-
-# Chat input
-if prompt := st.chat_input("Ask me anything..."):
-    # Add user message
+if prompt := st.chat_input("write your question"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
-
-    # Generate response
     with st.chat_message("assistant"):
-        with st.spinner("Thinking..."):
             try:
                 response = client.chat.completions.create(
                     model=model_name,
@@ -68,10 +45,14 @@ if prompt := st.chat_input("Ask me anything..."):
                     max_tokens=1024
                 )
                 assistant_reply = response.choices[0].message.content
-                
                 st.markdown(assistant_reply)
                 st.session_state.messages.append({"role": "assistant", "content": assistant_reply})
             except Exception as e:
                 st.error(f"Something went wrong: {e}")
-
-st.caption("Made with ❤️ using Groq + Streamlit")
+if st.session_state.messages:
+    with st.sidebar.expander(f"Chat History ({len(st.session_state.messages)} messages)"):
+        for i, msg in enumerate(st.session_state.messages):
+            role = "You" if msg["role"] == "user" else " AI"
+            st.markdown(f"{role}: {msg['content'][:100]}{'...' if len(msg['content']) > 100 else ''}")
+else:
+    st.sidebar.info("No chat history yet.")
