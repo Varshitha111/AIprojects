@@ -73,5 +73,3 @@ if prompt := st.chat_input("Ask me anything..."):
                 st.session_state.messages.append({"role": "assistant", "content": assistant_reply})
             except Exception as e:
                 st.error(f"Something went wrong: {e}")
-
-st.caption("Made with ❤️ using Groq + Streamlit")
