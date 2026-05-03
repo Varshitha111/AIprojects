@@ -49,13 +49,3 @@ if prompt := st.chat_input("write your question"):
                 st.session_state.messages.append({"role": "assistant", "content": assistant_reply})
             except Exception as e:
                 st.error(f"Something went wrong: {e}")
-<<<<<<< HEAD
-if st.session_state.messages:
-    with st.sidebar.expander(f"Chat History ({len(st.session_state.messages)} messages)"):
-        for i, msg in enumerate(st.session_state.messages):
-            role = "You" if msg["role"] == "user" else " AI"
-            st.markdown(f"{role}: {msg['content'][:100]}{'...' if len(msg['content']) > 100 else ''}")
-else:
-    st.sidebar.info("No chat history yet.")
-=======
->>>>>>> 28ca84eec6bf65950e0bb87a22363cca4e1809fa
